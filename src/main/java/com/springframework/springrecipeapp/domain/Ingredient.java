@@ -3,6 +3,8 @@ package com.springframework.springrecipeapp.domain;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Ingredient {
@@ -14,6 +16,19 @@ public class Ingredient {
 
     @OneToOne(fetch = FetchType.EAGER)
     private UnitOfMeasure unitOfMeasure;
+
+    @ManyToOne
+    private Recipe recipe;
+
+    public Ingredient(){
+
+    }
+
+    public Ingredient(String description, BigDecimal amount, UnitOfMeasure unitOfMeasure) {
+        this.description = description;
+        this.amount = amount;
+        this.unitOfMeasure = unitOfMeasure;
+    }
 
     public UnitOfMeasure getUnitOfMeasure() {
         return unitOfMeasure;
@@ -55,6 +70,5 @@ public class Ingredient {
         this.recipe = recipe;
     }
 
-    @ManyToOne
-    private Recipe recipe;
+
 }
