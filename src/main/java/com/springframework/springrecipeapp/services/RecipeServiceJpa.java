@@ -2,10 +2,12 @@ package com.springframework.springrecipeapp.services;
 
 import com.springframework.springrecipeapp.domain.Recipe;
 import com.springframework.springrecipeapp.repsositories.RecipeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class RecipeServiceJpa implements RecipeService{
 
@@ -17,6 +19,7 @@ public class RecipeServiceJpa implements RecipeService{
 
     @Override
     public List<Recipe> findAll() {
+        log.debug("I m in the service");
         return (List<Recipe>) recipeRespository.findAll();
     }
 
