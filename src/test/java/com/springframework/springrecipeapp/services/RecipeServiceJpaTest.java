@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -37,12 +34,12 @@ class RecipeServiceJpaTest {
     @Test
     void findAll() {
         Recipe recipe = new Recipe();
-        List<Recipe> recipeData = new ArrayList<>();
+        Set<Recipe> recipeData = new HashSet<>();
         recipeData.add(recipe);
 
         when(recipeRepository.findAll()).thenReturn(recipeData);
 
-        List<Recipe> recipes = recipeService.findAll();
+        Set<Recipe> recipes = recipeService.findAll();
 
         assertEquals(recipes.size(), recipeData.size());
         verify(recipeRepository,times(1)).findAll();

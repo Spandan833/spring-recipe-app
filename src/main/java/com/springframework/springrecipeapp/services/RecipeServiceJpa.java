@@ -5,7 +5,9 @@ import com.springframework.springrecipeapp.repsositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -18,9 +20,11 @@ public class RecipeServiceJpa implements RecipeService{
     }
 
     @Override
-    public List<Recipe> findAll() {
+    public Set<Recipe> findAll() {
         log.debug("I m in the service");
-        return (List<Recipe>) recipeRespository.findAll();
+        Set<Recipe> recipes = new HashSet<>();
+        recipeRespository.findAll().forEach(recipes::add);
+        return recipes;
     }
 
     @Override

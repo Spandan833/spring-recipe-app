@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 public interface RecipeService {
-    List<Recipe> findAll();
+    Set<Recipe> findAll();
 
     Recipe findById(Long id);
 
