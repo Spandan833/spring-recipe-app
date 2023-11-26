@@ -2,12 +2,12 @@ version: 2
 executors:
   java17:
     docker:
-      - image: 'cimg/openjdk:11.0'
+      - image: 'cimg/openjdk:17.0'
 jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:11-jdk
+      - image: circleci/openjdk:17.0-jdk
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
