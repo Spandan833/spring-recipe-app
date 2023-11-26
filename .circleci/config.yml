@@ -4,7 +4,7 @@ build:
 working_directory: ~/spring-recipe-app
 docker:
   # specify the version you desire here
-  - image: circleci/openjdk:8-jdk
+  - image: circleci/openjdk:17-jdk
 steps:
   - checkout
   # Download and cache dependencies
