@@ -3,10 +3,13 @@ package com.springframework.springrecipeapp.services;
 import com.springframework.springrecipeapp.domain.Recipe;
 import com.springframework.springrecipeapp.repsositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -29,7 +32,11 @@ public class RecipeServiceJpa implements RecipeService{
 
     @Override
     public Recipe findById(Long id) {
-        return recipeRespository.findById(id).get();
+       Optional<Recipe> recipeOptional = recipeRespository.findById(id);
+       if(!recipeOptional.isPresent()){
+           throw new RuntimeException("Recipe not found");
+       }
+       return recipeOptional.get();
     }
 
     @Override
