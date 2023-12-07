@@ -77,13 +77,20 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
             throw new RuntimeException("Expected UOM Not Found");
         }
 
+        Optional<UnitOfMeasure> poundUomOptional = unitOfMeasureRepository.findByDescription("Pound");
+
+        if(!poundUomOptional.isPresent()){
+            throw new RuntimeException("Expected UOM Not Found");
+        }
+
         //get optionals
         UnitOfMeasure eachUom = eachUomOptional.get();
         UnitOfMeasure tableSpoonUom = tableSpoonUomOptional.get();
-        UnitOfMeasure teapoonUom = tableSpoonUomOptional.get();
+        UnitOfMeasure teaspoon = tableSpoonUomOptional.get();
         UnitOfMeasure dashUom = dashUomOptional.get();
         UnitOfMeasure pintUom = pintUomOptional.get();
         UnitOfMeasure cupsUom = cupsUomOptional.get();
+        UnitOfMeasure poundUom = poundUomOptional.get();
 
         //get Categories
         Optional<Category> americanCategoryOptional = categoryRepository.findByDescription("American");
@@ -98,8 +105,15 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
             throw new RuntimeException("Expected Category Not Found");
         }
 
+        Optional<Category> indianCategoryOptional = categoryRepository.findByDescription("Indian");
+
+        if(!indianCategoryOptional.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
+
         Category americanCategory = americanCategoryOptional.get();
         Category mexicanCategory = mexicanCategoryOptional.get();
+        Category indianCategory = indianCategoryOptional.get();
 
         //Yummy Guac
         Recipe guacRecipe = new Recipe();
@@ -134,7 +148,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         guacRecipe.setNotes(guacNotes);
 
         guacRecipe.addIngredient(new Ingredient("ripe avocados", new BigDecimal(2), eachUom));
-        guacRecipe.addIngredient(new Ingredient("Kosher salt", new BigDecimal(".5"), teapoonUom));
+        guacRecipe.addIngredient(new Ingredient("Kosher salt", new BigDecimal(".5"), teaspoon));
         guacRecipe.addIngredient(new Ingredient("fresh lime juice or lemon juice", new BigDecimal(2), tableSpoonUom));
         guacRecipe.addIngredient(new Ingredient("minced red onion or thinly sliced green onion", new BigDecimal(2), tableSpoonUom));
         guacRecipe.addIngredient(new Ingredient("serrano chiles, stems and seeds removed, minced", new BigDecimal(2), eachUom));
@@ -144,7 +158,11 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
         guacRecipe.getCategories().add(americanCategory);
         guacRecipe.getCategories().add(mexicanCategory);
+        System.out.println("============American Recipes=============");
 
+        for(Recipe recipe : americanCategory.getRecipes()){
+            System.out.println(recipe.getDescription());
+        }
         //add to return list
         recipes.add(guacRecipe);
 
@@ -179,16 +197,15 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                 "\n" +
                 "\n" +
                 "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ");
-        tacoNotes.setRecipe(tacosRecipe);
         tacosRecipe.setNotes(tacoNotes);
         recipeRepository.save(tacosRecipe);
         recipeRepository.save(guacRecipe);
 
         tacosRecipe.addIngredient(new Ingredient("Ancho Chili Powder", new BigDecimal(2), tableSpoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Dried Oregano", new BigDecimal(1), teapoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Dried Cumin", new BigDecimal(1), teapoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Sugar", new BigDecimal(1), teapoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Salt", new BigDecimal(".5"), teapoonUom));
+        tacosRecipe.addIngredient(new Ingredient("Dried Oregano", new BigDecimal(1), teaspoon));
+        tacosRecipe.addIngredient(new Ingredient("Dried Cumin", new BigDecimal(1), teaspoon));
+        tacosRecipe.addIngredient(new Ingredient("Sugar", new BigDecimal(1), teaspoon));
+        tacosRecipe.addIngredient(new Ingredient("Salt", new BigDecimal(".5"), teaspoon));
         tacosRecipe.addIngredient(new Ingredient("Clove of Garlic, Choppedr", new BigDecimal(1), eachUom));
         tacosRecipe.addIngredient(new Ingredient("finely grated orange zestr", new BigDecimal(1), tableSpoonUom));
         tacosRecipe.addIngredient(new Ingredient("fresh-squeezed orange juice", new BigDecimal(3), tableSpoonUom));
@@ -207,7 +224,44 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         tacosRecipe.getCategories().add(americanCategory);
         tacosRecipe.getCategories().add(mexicanCategory);
 
-        recipes.add(tacosRecipe);
+        Recipe chickenBiryani = new Recipe();
+        chickenBiryani.setDescription("Indian Chicken Biryani");
+        chickenBiryani.getCategories().add(indianCategory);
+        chickenBiryani.setDifficulty(Difficulty.MODERATE);
+        chickenBiryani.setServings(1);
+        chickenBiryani.setCookTime(50);
+
+        Notes biryaniNotes = new Notes();
+        chickenBiryani.setNotes(biryaniNotes);
+        chickenBiryani.setDirections("1 Marinate the chicken\n"+ "2 Prepare the rice \n"
+                        + "3 Make the saffron milk\n"+ "4 Fry the onions\n" + "5 Cook the chicken\n" +
+                        "6 Preaheat the chicken" + "\n" + "7 Assemble the biryani");
+
+        biryaniNotes.setRecipeNotes("Biryani (pronounced bir-ja-ni), or biriyani, is a layered rice dish with its roots in the Mughal Dynasty in India. Mughals came to India in the 1500s and brought with them their own culture, language, and cuisine. When blended with those of India, this gave birth to many poetic things, biryani being one of them.\n" +
+                "\n" +
+                "Born in the royal kitchens of the Mughal India, biryani was developed as an effort to blend flavors of spicy Indian rice dishes to that of the Persian rice dish called pilaf.\n" +
+                "\n" +
+                "Just like the diversity in culture from one region of India to another, a biryani recipe changes from one region to another as well. Different biryani recipes were developed around the country in all mughal centers of India from Delhi to Lucknow, and all over the southern regions of India.");
+
+        chickenBiryani.setNotes(biryaniNotes);
+
+        chickenBiryani.addIngredient(new Ingredient("ginger garlic paste, divided", new BigDecimal(2),teaspoon));
+        chickenBiryani.addIngredient(new Ingredient("Turmeric powder", new BigDecimal(1), teaspoon));
+        chickenBiryani.addIngredient(new Ingredient("whole chilis, sliced (jalaepno or serrano)",new BigDecimal(3), eachUom));
+        chickenBiryani.addIngredient(new Ingredient("plain whole milk",new BigDecimal(1/4), cupsUom));
+        chickenBiryani.addIngredient(new Ingredient("Olive oil",new BigDecimal(2), teaspoon));
+        chickenBiryani.addIngredient(new Ingredient("Bone in chicken",new BigDecimal(1.5), poundUom));
+        chickenBiryani.addIngredient(new Ingredient("Ghee",new BigDecimal(3), teaspoon));
+        chickenBiryani.addIngredient(new Ingredient("Long Grain Basmati Rice", new BigDecimal(2), cupsUom));
+        chickenBiryani.addIngredient(new Ingredient("Whole black cardamom pods", new BigDecimal(3), eachUom));
+        chickenBiryani.addIngredient(new Ingredient("Whole pepper corns", new BigDecimal(1), teaspoon));
+        chickenBiryani.addIngredient(new Ingredient("Cooking oil", new BigDecimal(1), cupsUom));
+        chickenBiryani.addIngredient(new Ingredient("Milk cold or temperature", new BigDecimal(1/3), cupsUom));
+        chickenBiryani.addIngredient(new Ingredient("Whole black cardamom pods", new BigDecimal(3), eachUom));
+
+        recipeRepository.save(chickenBiryani);
+        recipes.add(chickenBiryani);
+
         return recipes;
     }
 }
