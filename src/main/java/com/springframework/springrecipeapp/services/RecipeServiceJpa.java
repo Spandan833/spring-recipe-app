@@ -1,14 +1,15 @@
 package com.springframework.springrecipeapp.services;
 
+import com.springframework.springrecipeapp.commands.RecipeCommand;
+import com.springframework.springrecipeapp.coverters.RecipeCommandToRecipe;
+import com.springframework.springrecipeapp.coverters.RecipeToRecipeCommand;
 import com.springframework.springrecipeapp.domain.Recipe;
 import com.springframework.springrecipeapp.repsositories.RecipeRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,9 +18,13 @@ import java.util.Set;
 public class RecipeServiceJpa implements RecipeService{
 
     private final RecipeRepository recipeRespository;
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-    public RecipeServiceJpa(RecipeRepository recipeRespository) {
+    public RecipeServiceJpa(RecipeRepository recipeRespository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRespository = recipeRespository;
+        this.recipeCommandToRecipe = recipeCommandToRecipe;
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
     @Override
@@ -40,6 +45,17 @@ public class RecipeServiceJpa implements RecipeService{
     }
 
     @Override
+    @Transactional
+    public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(recipeCommand);
+
+        Recipe savedRecipe = recipeRespository.save(detachedRecipe);
+        log.debug("Saved Recipe Id: "+ savedRecipe.getId());
+        
+        return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    @Override
     public void delete(Recipe recipe) {
         recipeRespository.delete(recipe);
     }
@@ -47,5 +63,13 @@ public class RecipeServiceJpa implements RecipeService{
     @Override
     public void deleteById(Long id) {
         recipeRespository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(long id) {
+        Recipe recipe = this.findById(id);
+        RecipeCommand command = this.recipeToRecipeCommand.convert(recipe);
+        return command;
     }
 }
