@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import javax.print.attribute.standard.Media;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -84,5 +83,16 @@ class RecipeControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/"+ID+"/update")).andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeform"))
                 .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    void RecipeController_DeleteRecipe_Success() throws Exception{
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/"+ID+"/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+
+        Mockito.verify(recipeService,Mockito.times(1)).deleteById(eq(ID));
     }
 }

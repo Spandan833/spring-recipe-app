@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
@@ -73,6 +74,9 @@ class RecipeServiceJpaTest {
 
     @Test
     void deleteById() {
+        recipeService.deleteById(2L);
+
+        Mockito.verify(recipeRepository, times(1)).deleteById(eq(2L));
     }
 
     @Test

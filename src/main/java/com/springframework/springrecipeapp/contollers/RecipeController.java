@@ -5,10 +5,7 @@ import com.springframework.springrecipeapp.services.RecipeService;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import static java.lang.Long.parseLong;
 
@@ -44,5 +41,12 @@ public class RecipeController {
     public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand){
         RecipeCommand saveCommand = recipeService.saveRecipeCommand(recipeCommand);
         return "redirect:recipe/"+saveCommand.getId()+"/show";
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{id}/delete")
+    public String delete(@PathVariable String id){
+        recipeService.deleteById(parseLong(id));
+        return "redirect:/";
     }
 }
