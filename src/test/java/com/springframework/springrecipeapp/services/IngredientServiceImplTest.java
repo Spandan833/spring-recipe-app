@@ -43,7 +43,7 @@ class IngredientServiceImplTest {
 
         Mockito.when(recipeService.findById(ID1)).thenReturn(recipe);
         IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(ID1,2L);
-
+        Assertions.assertEquals(ingredientCommand.getRecipeId(),ID1);
         Assertions.assertEquals(ingredientCommand.getId(),2L);
     }
 }
