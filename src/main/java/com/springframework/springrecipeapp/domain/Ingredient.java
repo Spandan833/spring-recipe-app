@@ -1,13 +1,14 @@
 package com.springframework.springrecipeapp.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(exclude = {"recipe"})
+@AllArgsConstructor
+@Builder
 @Entity
 public class Ingredient {
     @Id
