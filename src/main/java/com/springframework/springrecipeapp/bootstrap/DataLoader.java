@@ -262,6 +262,66 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         recipeRepository.save(chickenBiryani);
         recipes.add(chickenBiryani);
 
+        Recipe palakPaneer = new Recipe();
+        palakPaneer.setDescription("Palak Paneer");
+        palakPaneer.getCategories().add(indianCategory);
+        palakPaneer.setDifficulty(Difficulty.EASY);
+        palakPaneer.setServings(4);
+        palakPaneer.setCookTime(30);
+
+        Notes palakPaneerNotes = new Notes();
+        palakPaneerNotes.setRecipeNotes("Palak paneer is a popular Indian dish of creamy spinach gravy mixed with soft paneer cheese. It has a vibrant green color from the spinach.");
+        palakPaneer.setNotes(palakPaneerNotes);
+
+        palakPaneer.setDirections("1. Cook spinach and then blend into smooth paste \n" +
+                "2. Brown paneer cubes \n" +
+                "3. Prepare tomato onion base gravy \n" +
+                "4. Add spinach puree, spices and paneer cubes. Simmer.");
+
+        palakPaneer.addIngredient(new Ingredient("Spinach", new BigDecimal(2), poundUom));
+        palakPaneer.addIngredient(new Ingredient("Paneer", new BigDecimal(1), poundUom));
+        recipeRepository.save(palakPaneer);
+        recipes.add(palakPaneer);
+// other ingredients, save and add to list
+
+        Recipe chanaMasala = new Recipe();
+        chanaMasala.setDescription("Chana Masala");
+        chanaMasala.getCategories().add(indianCategory);
+        chanaMasala.setDifficulty(Difficulty.EASY);
+        chanaMasala.setServings(6);
+        chanaMasala.setCookTime(40);
+
+        Notes chanaMasalaNotes = new Notes();
+        chanaMasalaNotes.setRecipeNotes("Chana masala is a popular Indian dish made with chickpeas in a tomato based spicy gravy. It goes well with rice or roti.");
+        chanaMasala.setNotes(chanaMasalaNotes);
+
+        chanaMasala.setDirections("1. Soak chickpeas overnight and cook until soft\n" +
+                "2. Prepare onion tomato masala paste\n" +
+                "3. Add spices and cook well \n" +
+                "4. Add cooked chickpeas and simmer for 10 minutes\n" +
+                "5. Finish with cilantro");
+
+        chanaMasala.addIngredient(new Ingredient("Chickpeas", new BigDecimal(2), cupsUom));
+        chanaMasala.addIngredient(new Ingredient("Onion", new BigDecimal(1), eachUom));
+        chanaMasala.addIngredient(new Ingredient("Tomatoes", new BigDecimal(3), eachUom));
+// Other ingredients
+
+        recipeRepository.save(chanaMasala);
+        recipes.add(chanaMasala);
+// Set all other properties like above
+
+        Recipe dalMakhani = new Recipe();
+        dalMakhani.setDescription("Dal Makhani");
+// Set all properties
+
+        Recipe tikkaMasala = new Recipe();
+        tikkaMasala.setDescription("Chicken Tikka Masala");
+// Set all properties
+
+        Recipe naan = new Recipe();
+        naan.setDescription("Naan");
+// Set all properties
+
         return recipes;
     }
 }

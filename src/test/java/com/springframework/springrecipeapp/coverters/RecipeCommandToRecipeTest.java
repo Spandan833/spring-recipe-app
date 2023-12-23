@@ -1,6 +1,5 @@
 package com.springframework.springrecipeapp.coverters;
 
-import com.springframework.springrecipeapp.commands.IngredientCommand;
 import com.springframework.springrecipeapp.commands.RecipeCommand;
 import com.springframework.springrecipeapp.domain.Recipe;
 import org.junit.jupiter.api.Assertions;

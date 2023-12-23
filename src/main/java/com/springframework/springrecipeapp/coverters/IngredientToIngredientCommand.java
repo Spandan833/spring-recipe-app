@@ -19,7 +19,7 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
     @Override
     @Synchronized
     @Nullable
-    public IngredientCommand convert(Ingredient source) {
+    public IngredientCommand convert(@Nullable Ingredient source) {
         if(source == null) return null;
 
         IngredientCommand ingredientCommand = new IngredientCommand();
