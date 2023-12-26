@@ -7,7 +7,6 @@ import com.springframework.springrecipeapp.coverters.UnitOfMeasureToUnitOfMeasur
 import com.springframework.springrecipeapp.domain.Ingredient;
 import com.springframework.springrecipeapp.domain.Recipe;
 import com.springframework.springrecipeapp.domain.UnitOfMeasure;
-import com.springframework.springrecipeapp.repsositories.RecipeRepository;
 import com.springframework.springrecipeapp.repsositories.UnitOfMeasureRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +24,7 @@ class IngredientServiceImplTest {
 
     IngredientService ingredientService;
     @Mock
-    RecipeRepository recipeRepository;
+    com.springframework.springrecipeapp.repsositories.RecipeRepository recipeRepository;
     @Mock
     RecipeService recipeService;
     @Mock

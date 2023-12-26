@@ -2,7 +2,6 @@ package com.springframework.springrecipeapp.coverters;
 
 import com.springframework.springrecipeapp.commands.IngredientCommand;
 import com.springframework.springrecipeapp.domain.Ingredient;
-import com.springframework.springrecipeapp.services.RecipeService;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;

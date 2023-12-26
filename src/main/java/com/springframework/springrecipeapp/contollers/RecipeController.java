@@ -2,7 +2,6 @@ package com.springframework.springrecipeapp.contollers;
 
 import com.springframework.springrecipeapp.commands.RecipeCommand;
 import com.springframework.springrecipeapp.services.RecipeService;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

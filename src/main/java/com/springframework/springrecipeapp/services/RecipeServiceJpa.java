@@ -4,7 +4,6 @@ import com.springframework.springrecipeapp.commands.RecipeCommand;
 import com.springframework.springrecipeapp.coverters.RecipeCommandToRecipe;
 import com.springframework.springrecipeapp.coverters.RecipeToRecipeCommand;
 import com.springframework.springrecipeapp.domain.Recipe;
-import com.springframework.springrecipeapp.repsositories.RecipeRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,13 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class RecipeServiceJpa implements RecipeService{
+public class RecipeServiceJpa implements RecipeService {
 
-    private final RecipeRepository recipeRespository;
+    private final com.springframework.springrecipeapp.repsositories.RecipeRepository recipeRespository;
     private final RecipeCommandToRecipe recipeCommandToRecipe;
     private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-    public RecipeServiceJpa(RecipeRepository recipeRespository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
+    public RecipeServiceJpa(com.springframework.springrecipeapp.repsositories.RecipeRepository recipeRespository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRespository = recipeRespository;
         this.recipeCommandToRecipe = recipeCommandToRecipe;
         this.recipeToRecipeCommand = recipeToRecipeCommand;
