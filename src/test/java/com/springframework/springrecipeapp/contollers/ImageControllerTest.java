@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
@@ -63,6 +64,28 @@ class ImageControllerTest {
     }
 
     @Test
-    void recipeImageFromDB() {
+    void recipeImageFromDB() throws Exception{
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        String data = "Spandan";
+        byte[] byteArray = data.getBytes();
+        Byte[] wrappedByte = new Byte[byteArray.length];
+        int i = 0;
+        for(Byte b : byteArray){
+            wrappedByte[i++] = b;
+        }
+
+        recipeCommand.setImage(wrappedByte);
+
+        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+
+        MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeimage"))
+                                                .andExpect(status().isOk())
+                                                .andReturn()
+                                                .getResponse();
+
+        assertEquals(byteArray.length, response.getContentAsByteArray().length);
+
     }
 }

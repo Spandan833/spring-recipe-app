@@ -88,7 +88,8 @@ class RecipeControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/"+ID+"/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/"))
+                        .andExpect(header().string("Location","/"));
 
         Mockito.verify(recipeService,Mockito.times(1)).deleteById(eq(ID));
     }
