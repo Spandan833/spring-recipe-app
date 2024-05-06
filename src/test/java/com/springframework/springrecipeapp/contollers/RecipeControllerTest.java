@@ -2,7 +2,9 @@ package com.springframework.springrecipeapp.contollers;
 
 import com.springframework.springrecipeapp.commands.RecipeCommand;
 import com.springframework.springrecipeapp.domain.Recipe;
+import com.springframework.springrecipeapp.exceptions.NotFoundException;
 import com.springframework.springrecipeapp.services.RecipeService;
+import com.springframework.springrecipeapp.services.RecipeServiceJpa;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,7 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -38,7 +43,7 @@ class RecipeControllerTest {
         recipe.setId(2L);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
-        Mockito.when(recipeService.findById(anyLong())).thenReturn(recipe);
+        when(recipeService.findById(anyLong())).thenReturn(recipe);
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/show"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
@@ -56,11 +61,19 @@ class RecipeControllerTest {
     }
 
     @Test
+    void RecipeNotFoundTest() throws Exception{
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
+    }
+    @Test
     void RecipeController_PostNewRecipeForm_Success() throws  Exception{
         RecipeCommand recipeCommand = RecipeCommand.builder().id(ID).description(DESCRIPTION).build();
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
-        Mockito.when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
+        when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -75,7 +88,7 @@ class RecipeControllerTest {
         RecipeCommand recipeCommand = RecipeCommand.builder().id(ID).description(DESCRIPTION).build();
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
-        Mockito.when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/"+ID+"/update")).andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeform"))

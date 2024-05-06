@@ -4,6 +4,7 @@ import com.springframework.springrecipeapp.commands.RecipeCommand;
 import com.springframework.springrecipeapp.coverters.RecipeCommandToRecipe;
 import com.springframework.springrecipeapp.coverters.RecipeToRecipeCommand;
 import com.springframework.springrecipeapp.domain.Recipe;
+import com.springframework.springrecipeapp.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class RecipeServiceJpa implements RecipeService {
     public Recipe findById(Long id) {
        Optional<Recipe> recipeOptional = recipeRespository.findById(id);
        if(!recipeOptional.isPresent()){
-           throw new RuntimeException("Recipe not found");
+           throw new NotFoundException("Recipe not found");
        }
        return recipeOptional.get();
     }
