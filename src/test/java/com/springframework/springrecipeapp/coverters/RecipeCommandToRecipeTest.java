@@ -2,6 +2,7 @@ package com.springframework.springrecipeapp.coverters;
 
 import com.springframework.springrecipeapp.commands.RecipeCommand;
 import com.springframework.springrecipeapp.domain.Recipe;
+import jakarta.persistence.Id;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,9 +33,13 @@ class RecipeCommandToRecipeTest {
 
     @Test
     void RecipeCommand_Convert_RecipeObjectPropertiesMatch() {
-        RecipeCommand recipeCommand = RecipeCommand.builder().id(ID)
-                .description(DESCRIPTION).cookTime(COOK_TIME)
-                .servings(SERVINGS).url(URL).build();
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(ID);
+        recipeCommand.setDescription(DESCRIPTION);
+        recipeCommand.setCookTime(COOK_TIME);
+        recipeCommand.setServings(SERVINGS);
+        recipeCommand.setUrl(URL);
+
 
         Recipe recipe = converter.convert(recipeCommand);
 

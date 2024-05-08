@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -26,6 +27,7 @@ class RecipeControllerTest {
 
     private static final String DESCRIPTION = "Biryani";
     private static final Long ID = 22L;
+    public static final String URL = "https://stackoverflow.com/questions/46644515/spring-boot-thymeleaf-unit-test-model-attribute-does-not-exist";
     RecipeController recipeController;
 
     @Mock
@@ -61,31 +63,54 @@ class RecipeControllerTest {
     }
 
     @Test
+    void testPostNewRecipeValidationFaile() throws Exception{
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
+
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+        mockMvc.perform(post("/recipe")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", ""))
+                .andExpect(model().hasErrors()) // Expect validation errors
+                .andExpect(model().attributeExists("recipe")) // Expect "recipe" attribute in the model
+                .andExpect(view().name("recipe/recipeform")); // Expect "recipe/recipeform" view
+    }
+    @Test
     void RecipeNotFoundTest() throws Exception{
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
         when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/show"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
     }
     @Test
     void RecipeController_PostNewRecipeForm_Success() throws  Exception{
-        RecipeCommand recipeCommand = RecipeCommand.builder().id(ID).description(DESCRIPTION).build();
+        RecipeCommand recipeCommand = new RecipeCommand();
+                recipeCommand.setId(ID);
+                recipeCommand.setDescription(DESCRIPTION);
+
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
         when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
+        mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("id","")
-                        .param("description","Some string"))
+                        .param("description","Some string")
+                        .param("directions", "Some string")
+                        .param("url", URL))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:recipe/"+ID+"/show"));
     }
 
     @Test
     void RecipeController_UpdateRecipe_Success() throws Exception{
-        RecipeCommand recipeCommand = RecipeCommand.builder().id(ID).description(DESCRIPTION).build();
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(ID);
+        recipeCommand.setDescription(DESCRIPTION);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
         when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
