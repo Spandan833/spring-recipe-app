@@ -21,6 +21,9 @@
     <div class="justify-content-center">
         <div class="col-md-6 offset-md-3">
             <form  th:object="${recipe}" th:action="@{/recipe}"  method="post">
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    Please correct errors below
+                </div>
                 <input type="hidden" th:field="*{id}"/>
                 <div class="panel-group">
                     <div class="card mb-3">
@@ -30,8 +33,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label><b>Recipe Description:</b></label>
-                                    <input type="text" class="form-control" th:field="*{description}"/>
+                                    <input id="description" type="text" class="form-control" th:errorclass="is-invalid" th:field="*{description}" placeholder="description"/>
+                                    <label for="description">Recipe Description</label>
+                                    <div class="invalid-feedback">
+                                        <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
